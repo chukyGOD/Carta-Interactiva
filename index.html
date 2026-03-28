@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Una última conversación</title>
+
+<style>
+body {
+  background: #0f0f0f;
+  color: #f1f1f1;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+  max-width: 500px;
+  padding: 20px;
+}
+
+button {
+  margin: 10px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #cccccc;
+}
+
+.fade {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container fade" id="app"></div>
+
+<script>
+const app = document.getElementById("app");
+
+function render(text, options) {
+  app.innerHTML = "<p>" + text + "</p>";
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt.text;
+    btn.onclick = opt.next;
+    app.appendChild(btn);
+  });
+}
+
+// INICIO
+function start() {
+  render("Respóndeme con honestidad, aunque duela...<br><br><b>¿De verdad te gusté?</b>", [
+    { text: "Sí", next: q1 },
+    { text: "No", next: q2 }
+  ]);
+}
+
+// RAMA SÍ
+function q1() {
+  render("Entonces hay algo que no encaja...<br><br><b>¿En qué momento dejé de importarte?</b>", [
+    { text: "Dejaste de ser lo mismo", next: q1a },
+    { text: "Nunca dejaste de importar", next: q1b }
+  ]);
+}
+
+// RAMA NO
+function q2() {
+  render("Entonces necesito entender algo...<br><br><b>¿Por qué te quedaste si no sentías nada?</b>", [
+    { text: "No sé", next: q2a },
+    { text: "No fue mi intención", next: q2b }
+  ]);
+}
+
+// SUBRAMAS
+
+function q1a() {
+  render("Si dejé de importarte...<br><br>me hubiese gustado saberlo antes de sentir que simplemente desapareciste.", [
+    { text: "Continuar", next: final1 }
+  ]);
+}
+
+function q1b() {
+  render("Entonces no fui yo...<br><br>y eso es lo que más me cuesta entender.", [
+    { text: "Seguir", next: q3 }
+  ]);
+}
+
+function q2a() {
+  render("Decir 'no sé' también es una respuesta...<br><br>y normalmente significa que nunca fue tan importante.", [
+    { text: "Continuar", next: final2 }
+  ]);
+}
+
+function q2b() {
+  render("Tal vez no fue tu intención...<br><br>pero igual terminó doliendo.", [
+    { text: "Continuar", next: final3 }
+  ]);
+}
+
+// PROFUNDIZAR (volver)
+function q3() {
+  render("Solo quiero saber una cosa más...<br><br><b>¿Alguna vez pensaste en volver conmigo?</b>", [
+    { text: "Sí", next: q3a },
+    { text: "No", next: q3b }
+  ]);
+}
+
+function q3a() {
+  render("Entonces tal vez todavía queda algo...<br><br>pero no puedo seguir sosteniendo esto yo solo.", [
+    { text: "Final", next: final4 }
+  ]);
+}
+
+function q3b() {
+  render("Entonces esto responde todo...<br><br>solo yo estaba viendo algo que ya no existía.", [
+    { text: "Final", next: final2 }
+  ]);
+}
+
+// FINALES
+
+function final1() {
+  render("No fue falta de intentar...<br><br>fue falta de decir las cosas a tiempo.", []);
+}
+
+function final2() {
+  render("Creo que ya entendí lo que pasó...<br><br>solo me costaba aceptarlo.", []);
+}
+
+function final3() {
+  render("No te culpo completamente...<br><br>pero tampoco voy a ignorar lo que sentí.", []);
+}
+
+function final4() {
+  render("Si algún día decides volver...<br><br>espero que sea porque realmente me elegiste.", []);
+}
+
+// START
+start();
+</script>
+
+</body>
+</html>
