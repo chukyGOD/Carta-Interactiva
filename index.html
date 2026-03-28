@@ -18,7 +18,7 @@ body {
 
 .container {
   text-align: center;
-  max-width: 500px;
+  max-width: 520px;
   padding: 20px;
 }
 
@@ -30,28 +30,16 @@ button {
   background: #ffffff;
   color: #000;
   cursor: pointer;
-  transition: 0.3s;
-  font-size: 14px;
 }
 
 button:hover {
   background: #cccccc;
 }
-
-.fade {
-  animation: fadeIn 0.5s;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
 </style>
 </head>
 
 <body>
-
-<div class="container fade" id="app"></div>
+<div class="container" id="app"></div>
 
 <script>
 const app = document.getElementById("app");
@@ -68,90 +56,117 @@ function render(text, options) {
 
 // INICIO
 function start() {
-  render("Respóndeme con honestidad, aunque duela...<br><br><b>¿De verdad te gusté?</b>", [
+  render("Respóndeme con honestidad...<br><br><b>¿De verdad te gusté?</b>", [
     { text: "Sí", next: q1 },
     { text: "No", next: q2 }
   ]);
 }
 
-// RAMA SÍ
+// SI
 function q1() {
-  render("Entonces hay algo que no encaja...<br><br><b>¿En qué momento dejé de importarte?</b>", [
-    { text: "Dejaste de ser lo mismo", next: q1a },
-    { text: "Nunca dejaste de importar", next: q1b }
+  render("Entonces dime algo...<br><br><b>¿En algún momento dejé de importarte?</b>", [
+    { text: "Sí", next: q1a },
+    { text: "No", next: q1b }
   ]);
 }
 
-// RAMA NO
+function q1a() {
+  render("¿Fue algo que hice...<br><br>o simplemente cambiaste?", [
+    { text: "Fuiste tú", next: f1 },
+    { text: "Cambié yo", next: f2 }
+  ]);
+}
+
+function q1b() {
+  render("Entonces necesito entender...<br><br><b>¿Por qué te alejaste?</b>", [
+    { text: "Miedo", next: q3 },
+    { text: "Perdí el interés", next: f3 }
+  ]);
+}
+
+// NO
 function q2() {
-  render("Entonces necesito entender algo...<br><br><b>¿Por qué te quedaste si no sentías nada?</b>", [
+  render("Entonces explícame...<br><br><b>¿Por qué te quedaste conmigo?</b>", [
     { text: "No sé", next: q2a },
     { text: "No fue mi intención", next: q2b }
   ]);
 }
 
-// SUBRAMAS
-
-function q1a() {
-  render("Si dejé de importarte...<br><br>me hubiese gustado saberlo antes de sentir que simplemente desapareciste.", [
-    { text: "Continuar", next: final1 }
-  ]);
-}
-
-function q1b() {
-  render("Entonces no fui yo...<br><br>y eso es lo que más me cuesta entender.", [
-    { text: "Seguir", next: q3 }
-  ]);
-}
-
 function q2a() {
-  render("Decir 'no sé' también es una respuesta...<br><br>y normalmente significa que nunca fue tan importante.", [
-    { text: "Continuar", next: final2 }
+  render("¿Nunca sentiste nada real?<br><br><b>Ni siquiera un poco?</b>", [
+    { text: "Sí, un poco", next: q4 },
+    { text: "No", next: f4 }
   ]);
 }
 
 function q2b() {
-  render("Tal vez no fue tu intención...<br><br>pero igual terminó doliendo.", [
-    { text: "Continuar", next: final3 }
+  render("Entonces...<br><br><b>¿Te importó cómo me iba a sentir?</b>", [
+    { text: "Sí", next: q4 },
+    { text: "No", next: f5 }
   ]);
 }
 
-// PROFUNDIZAR (volver)
+// PROFUNDIZAR
 function q3() {
-  render("Solo quiero saber una cosa más...<br><br><b>¿Alguna vez pensaste en volver conmigo?</b>", [
-    { text: "Sí", next: q3a },
-    { text: "No", next: q3b }
+  render("Si fue miedo...<br><br><b>¿Miedo a perderme o miedo a sentir algo real?</b>", [
+    { text: "Perderte", next: q5 },
+    { text: "Sentir algo real", next: q5 }
   ]);
 }
 
-function q3a() {
-  render("Entonces tal vez todavía queda algo...<br><br>pero no puedo seguir sosteniendo esto yo solo.", [
-    { text: "Final", next: final4 }
+function q4() {
+  render("Entonces hubo algo...<br><br><b>¿Por qué no lo intentaste de verdad?</b>", [
+    { text: "No estaba listo/a", next: q5 },
+    { text: "No eras suficiente", next: f6 }
   ]);
 }
 
-function q3b() {
-  render("Entonces esto responde todo...<br><br>solo yo estaba viendo algo que ya no existía.", [
-    { text: "Final", next: final2 }
+function q5() {
+  render("Solo una cosa más...<br><br><b>¿Alguna vez pensaste en volver conmigo?</b>", [
+    { text: "Sí", next: q6 },
+    { text: "No", next: f7 }
+  ]);
+}
+
+function q6() {
+  render("Y si volvieras...<br><br><b>¿Sería diferente esta vez?</b>", [
+    { text: "Sí", next: f8 },
+    { text: "No", next: f7 }
   ]);
 }
 
 // FINALES
 
-function final1() {
-  render("No fue falta de intentar...<br><br>fue falta de decir las cosas a tiempo.", []);
+function f1() {
+  render("Ojalá me lo hubieras dicho antes...<br><br>no después de hacerme sentir invisible.", []);
 }
 
-function final2() {
-  render("Creo que ya entendí lo que pasó...<br><br>solo me costaba aceptarlo.", []);
+function f2() {
+  render("Entonces supongo que nunca dependió de mí...<br><br>y eso duele distinto.", []);
 }
 
-function final3() {
-  render("No te culpo completamente...<br><br>pero tampoco voy a ignorar lo que sentí.", []);
+function f3() {
+  render("Perder el interés también es una respuesta...<br><br>aunque no sea la que quería.", []);
 }
 
-function final4() {
-  render("Si algún día decides volver...<br><br>espero que sea porque realmente me elegiste.", []);
+function f4() {
+  render("Entonces todo fue una ilusión...<br><br>solo que yo sí la sentí real.", []);
+}
+
+function f5() {
+  render("Eso explica muchas cosas...<br><br>aunque no las haga doler menos.", []);
+}
+
+function f6() {
+  render("Tal vez nunca fui suficiente para ti...<br><br>pero eso no significa que no lo fuera.", []);
+}
+
+function f7() {
+  render("Entonces ya tengo mi respuesta...<br><br>aunque no era la que quería aceptar.", []);
+}
+
+function f8() {
+  render("Tal vez todavía hay algo...<br><br>pero esta vez no puede ser a medias.", []);
 }
 
 // START
